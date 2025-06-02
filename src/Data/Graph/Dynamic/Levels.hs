@@ -52,7 +52,7 @@ module Data.Graph.Dynamic.Levels (
 
     -- * Advanced/internal
     spanningForest,
-    getRepresentative,
+    findRepresentative,
 ) where
 
 import Control.Monad
@@ -423,13 +423,13 @@ spanningForest (Graph levels) = do
 
 {- | /O(log(v))/
 
-@getRepresentative g v@ finds a representative node for the connected component of g containing v, if it exists. Allows us
+@findRepresentative g v@ finds a representative node for the connected component of g containing v, if it exists. Allows us
 to avoid some connectedness tests
 -}
-getRepresentative ::
+findRepresentative ::
     (Eq v, Hashable v, Tree t, PrimMonad m) =>
     Graph t (PrimState m) v -> v -> m (Maybe v)
-getRepresentative (Graph levels) v = do
+findRepresentative (Graph levels) v = do
     L{..} <- readMutVar levels
     if VM.null unLevels
         then return Nothing
